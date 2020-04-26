@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Document</title>
+</head>
+<body>
+  <h1>HTML5 local video file player example</h1>
+  <div id="message"></div>
+  <input type="file" accept="video/*"/>
+  <canvas id='vid' height="224 px"></canvas>
+  <video controls autoplay height="224 px"></video>
+
+<script>
+  (function localFileVideoPlayer() {
+	'use strict'
+  var URL = window.URL || window.webkitURL
+  var displayMessage = function (message, isError) {
+    var element = document.querySelector('#message')
+    element.innerHTML = message
+    element.className = isError ? 'error' : 'info'
+  }
+  var playSelectedFile = function (event) {
+    var file = this.files[0]
+    var type = file.type
+    var videoNode = document.querySelector('video')
+    var canPlay = videoNode.canPlayType(type)
+    if (canPlay === '') canPlay = 'no'
+    var message = 'Can play type "' + type + '": ' + canPlay
+    var isError = canPlay === 'no'
+    displayMessage(message, isError)
+
+    if (isError) {
+      return
+    }
+
+    var fileURL = URL.createObjectURL(file)
+    console.log(fileURL + "this is url")
+    videoNode.src = fileURL
+  }
+  var inputNode = document.querySelector('input')
+  inputNode.addEventListener('change', playSelectedFile, false)
+  })()
+
+
+</script>
+<input type="file" accept="video/*"/>
+</body>
+</html>
